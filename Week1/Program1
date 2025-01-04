@@ -1,0 +1,70 @@
+#include<iostream>
+using namespace std;
+
+// Function to convert 2D array to 1D array using row-major order
+void convertTo1D(int matrix[10][10], int row, int col, int oneDArray[100]) {
+    int index = 0;
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
+            oneDArray[index++] = matrix[i][j];
+        }
+    }
+}
+
+// Function to retrieve value from the 1D array using row-major formula
+int getValueFrom1D(int oneDArray[100], int row, int col, int rowIndex, int colIndex) {
+    // Formula to calculate the 1D index
+    int index = (rowIndex * col) + colIndex;
+    return oneDArray[index];
+}
+
+int main() {
+    int row, col;
+    cout << "Enter number of rows and columns: ";
+    cin >> row >> col;
+
+    // Declare the matrix
+    int matrix[10][10];
+
+    // Read the matrix elements
+    cout << "Enter matrix elements (For general matrix, enter all values):\n";
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
+            cin >> matrix[i][j];
+        }
+    }
+
+    // Declare the 1D array
+    int oneDArray[100];
+
+    // Convert the 2D matrix to a 1D array
+    convertTo1D(matrix, row, col, oneDArray);
+
+    // Display the 1D array
+    cout << "1D array (Row-major): ";
+    for(int i = 0; i < row * col; i++) {
+        cout << oneDArray[i] << " ";
+    }
+    cout << endl;
+
+    // Read a location (row and column) to retrieve the value
+    int rowIndex, colIndex;
+    cout << "Enter the row and column to retrieve the value: ";
+    cin >> rowIndex >> colIndex;
+
+    // Check if the location is valid
+    if (rowIndex >= 0 && rowIndex < row && colIndex >= 0 && colIndex < col) {
+        // Retrieve the value from the 1D array using the formula
+        int value = getValueFrom1D(oneDArray, row, col, rowIndex, colIndex);
+        cout << "Value at (" << rowIndex << ", " << colIndex << ") is: " << value << endl;
+    } else {
+        cout << "Invalid location!" << endl;
+    }
+
+    return 0;
+}
+
+
+
+
+
