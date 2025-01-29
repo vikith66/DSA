@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+int main(){
+        int row,col;
+        cout<<"Enter row and column values:"<<endl;
+        cin>>row>>col;
+        int no_of_elements = row*col;
+        int mat[row][col];
+        int rowmajor[no_of_elements],colmajor[no_of_elements];
+        int rowele=0;
+        int colele=0;
+        cout<<"Enter matrix elements:"<<endl;
+        for(int i=0;i<row;i++){
+                for(int j=0;j<col;j++){
+                        cin>>mat[i][j];
+                }
+        }
+        for(int i=0;i<row;i++){
+                for(int j=0;j<col;j++){
+                        rowmajor[rowele]=mat[i][j];
+                        rowele++;
+                }
+        }
+        for(int j=0;j<col;j++){
+                for(int i=0;i<row;i++){
+                        colmajor[colele]=mat[i][j];
+                        colele++;
+                }
+        }
+        cout<<"MATRIX ELEMENTS:\n";
+        for(int i=0;i<row;i++){
+                for(int j=0;j<col;j++){
+                        cout<<mat[i][j]<<"\t";
+                }
+                cout<<"\n";
+        }
+        cout<<"\n";
+        cout<<"ROW MAJOR MATRIX:\n";
+
+
+
+        for(int i=0;i<no_of_elements;i++){
+                cout<<rowmajor[i]<<"\t";
+        }
+        cout<<"\n";
+        cout<<"COLUMN MAJOR MATRIX:\n";
+        for(int i=0;i<no_of_elements;i++){
+                cout<<colmajor[i]<<"\t";
+        }
+        cout<<"\n";
+        cout<<"COLUMN MAJOR MATRIX:\n";
+        for(int i=0;i<no_of_elements;i++){
+                cout<<colmajor[i]<<"\t";
+        }
+        cout<<"\n";
+        return 0;
+}
