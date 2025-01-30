@@ -1,50 +1,47 @@
 #include<iostream>
 using namespace std;
 int main(){
-    int m,n,i,j,k=0;
-    cout<<"Enter the order of matrix (row and column): \n";
-    cin>>m>>n;
-    int mat[m][n],no_of_elements;
-    no_of_elements=m*n;
-    int arr[no_of_elements];
-    cout<<"Enter the elements of matrix:\n";
-    for(i=0;i<m;i++){
-        for(j=0;j<n;j++){
-                cin>>mat[i][j];
+    int m, n, k = 0;
+    cout << "Enter the order of matrix (row and column): \n";
+    cin >> m >> n;
+    int mat[m][n], size;
+    size = m * n;
+    int arr[size];
+    cout << "Enter the elements of matrix:\n";
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            cin >> mat[i][j];
         }
     }
-    cout<<"The elements of matrix is:\n";
-    for(i=0;i<m;i++){
-        for(j=0;j<n;j++){
-            cout<<mat[i][j]<<"\t";
+    cout << "The elements of matrix is:\n";
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            cout << mat[i][j] << "\t";
         }
-        cout<<"\n";
+        cout << "\n";
     }
-    cout<<"\n";
-    for(i=0;i<n;i++){
-        for(j=0;j<m;j++){
-            arr[k]=mat[j][i];
+    cout << "\n";
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            arr[k] = mat[j][i]; // Column-major order
             k++;
         }
     }
-
-    cout<<"2D to 1D is:\n";
-    for(i=0;i<no_of_elements;i++){
-        cout<<arr[i]<<"\t";
+    cout << "2D to 1D is:\n";
+    for(int i = 0; i < size; i++){
+        cout << arr[i] << "\t";
     }
-    cout<<"\n";
-
-    cout<<"Enter the row and column values to search:\n";
-    int row,col;
-    cin>>row>>col;
-    if(row<m && col<n){
-        int search_index=(col*m)+row;
-        cout<<"The seacrh element is:";
-        cout<<arr[search_index]<<endl;
+    cout << "\n";
+    cout << "Enter the row and column values to search:\n";
+    int row, col, pos;
+    cin >> row >> col;
+    if(row < m && col < n){
+        pos = (col * m) + row; // Formula for column-major order
+        cout << "The search element is: " << arr[pos] << endl;
+        cout << "Position of the search element in the 1D array is: " << pos;
     }
     else{
-        cout<<"Enter a valid value!!";
+        cout << "Enter valid values!!";
     }
-
     return 0;
 }
