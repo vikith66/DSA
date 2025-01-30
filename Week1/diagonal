@@ -1,15 +1,15 @@
 #include<iostream>
 using namespace std;
 int main(){
-    int n,i,j,k=0;
+    int n,k=0;
     cout<<"Enter the order of square matrix:";
     cin>>n;
-    int mat[n][n],no_of_elements;
-    no_of_elements=n*n;
-    int arr[no_of_elements];
-    cout<<"Enter the elements of lower triangular matrix:\n";
-    for(i=0;i<n;i++){
-        for(j=0;j<n;j++){
+    int mat[n][n],size;
+    size=n;
+    int arr[size];
+    cout<<"Enter the elements of diagonal matrix:\n";
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
             if(i==j){
                 cin>>mat[i][j];
             }
@@ -18,37 +18,37 @@ int main(){
             }
         }
     }
-    cout<<"The elements of Diagonal matrix is:\n";
-    for(i=0;i<n;i++){
-        for(j=0;j<n;j++){
+    cout<<"The elements of diagonal matrix is:\n";
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
             cout<<mat[i][j]<<"\t";
         }
         cout<<"\n";
     }
     cout<<"\n";
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            if (i == j) {
-                arr[k] = mat[i][j];
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(i==j){
+                arr[k]=mat[i][j];
                 k++;
             }
         }
     }
     cout<<"2D to 1D is:";
-    for(i=0;i<k;i++){
+    for(int i=0;i<k;i++){
         cout<<arr[i]<<"\t";
     }
     cout<<"\n";
-    cout<<"Enter row and column value of an element to search:";
-    int row,col,search_index;
+    cout<<"Enter row and column value of an element to search:\n";
+    int row,col,pos;
     cin>>row>>col;
-    if(row<n && col<n && row==col){
-        search_index=row;
-        cout<<"Search element is:"<<arr[search_index]<<endl;
+    if(row==col){
+        pos=row;
+        cout<<"Search element is:"<<arr[pos]<<"\n";
+        cout<<"Position of the search element in the 1D array is:"<<pos;
     }
     else{
         cout<<"Enter valid values!!";
-      }
-
+    }
     return 0;
 }
