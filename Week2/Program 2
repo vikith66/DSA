@@ -1,0 +1,109 @@
+#include <iostream>
+using namespace std;
+
+struct poly {
+    int coe;
+    int expo;
+};
+
+void printTerm(int coe, int expo, bool isFirstTerm) {
+    if (coe == 0) return;
+
+    if (!isFirstTerm) {
+        if (coe > 0) cout << " + ";
+        else cout << " - ";
+    } else if (coe < 0) {
+        cout << "-";
+    }
+
+    int absCoe = abs(coe);
+    if (expo == 0) {
+        cout << absCoe;
+    } else if (expo == 1) {
+        cout << absCoe << "x";
+    } else {
+        cout << absCoe << "x^" << expo;
+    }
+}
+
+int main() {
+    int n, m, k = 0, i, j;
+    struct poly p1[20], p2[20], sum[40];
+
+    cout << "Enter first polynomial:\n";
+    cout << "Enter the number of terms: ";
+    cin >> n;
+    cout << "Enter coefficient and exponent (in descending order of exponents):\n";
+    for (i = 0; i < n; i++) {
+        cin >> p1[i].coe >> p1[i].expo;
+        if (i > 0 && p1[i].expo > p1[i - 1].expo) {
+            cout << "Exponents must be entered in descending order. Please re-enter:\n";
+            i--;
+        }
+    }
+
+    cout << "Enter second polynomial:\n";
+    cout << "Enter the number of terms: ";
+    cin >> m;
+    cout << "Enter coefficient and exponent (in descending order of exponents):\n";
+    for (i = 0; i < m; i++) {
+        cin >> p2[i].coe >> p2[i].expo;
+        if (i > 0 && p2[i].expo > p2[i - 1].expo) {
+            cout << "Exponents must be entered in descending order. Please re-enter:\n";
+            i--;
+        }
+    }
+
+    cout << "First Polynomial: ";
+    for (i = 0; i < n; i++) {
+        printTerm(p1[i].coe, p1[i].expo, i == 0);
+    }
+    cout << "\n";
+
+    cout << "Second Polynomial: ";
+    for (i = 0; i < m; i++) {
+        printTerm(p2[i].coe, p2[i].expo, i == 0);
+    }
+    cout << "\n";
+
+    i = 0; j = 0; k = 0;
+    while (i < n && j < m) {
+        if (p1[i].expo > p2[j].expo) {
+            sum[k] = p1[i];
+            k++;
+            i++;
+        } else if (p1[i].expo < p2[j].expo) {
+            sum[k] = p2[j];
+            k++;
+            j++;
+        } else {
+            sum[k].expo = p1[i].expo;
+            sum[k].coe = p1[i].coe + p2[j].coe;
+            k++; i++; j++;
+        }
+    }
+
+    while (i < n) {
+        sum[k] = p1[i];
+        k++;
+        i++;
+    }
+
+    while (j < m) {
+        sum[k] = p2[j];
+        k++;
+        j++;
+    }
+
+    cout << "Sum of Polynomials: ";
+    bool isFirstTerm = true;
+    for (i = 0; i < k; i++) {
+        if (sum[i].coe != 0) {
+            printTerm(sum[i].coe, sum[i].expo, isFirstTerm);
+            isFirstTerm = false;
+        }
+    }
+    cout << "\n";
+
+    return 0;
+}
