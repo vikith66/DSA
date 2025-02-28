@@ -1,0 +1,85 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+bool isOperator(char c) {
+    return c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '^';
+}
+
+int precedence(char c) {
+    if (c == '+' || c == '-') return 1;
+    if (c == '*' || c == '/' || c == '%') return 2;
+    if (c == '^') return 3;
+    return 0;
+}
+
+string infixToPostfix(string infix) {
+    char stack[100];
+    int top = -1;
+    string postfix = "";
+
+    for (int i = 0; i < infix.length(); i++) {
+        char c = infix[i];
+
+        if (isalnum(c)) {
+            postfix += c;
+        }
+        else if (c == '(') {
+            stack[++top] = c;
+        }
+        else if (c == ')') {
+            while (top >= 0 && stack[top] != '(') {
+                postfix += stack[top--];
+            }
+            top--;
+        }
+        else if (isOperator(c)) {
+            while (top >= 0 && precedence(stack[top]) > precedence(c)) {
+                postfix += stack[top--];
+            }
+            stack[++top] = c;
+        }
+    }
+
+    while (top >= 0) {
+        postfix += stack[top--];
+    }
+
+    return postfix;
+}
+
+string reverseString(string str) {
+    int n = str.length();
+    for (int i = 0; i < n / 2; i++) {
+        swap(str[i], str[n - i - 1]);
+    }
+    return str;
+}
+
+string infixToPrefix(string infix) {
+    infix = reverseString(infix);
+
+    for (int i = 0; i < infix.length(); i++) {
+        if (infix[i] == '(') {
+            infix[i] = ')';
+        } else if (infix[i] == ')') {
+            infix[i] = '(';
+        }
+    }
+
+    string postfix = infixToPostfix(infix);
+    string prefix = reverseString(postfix);
+
+    return prefix;
+}
+
+int main() {
+    string infix;
+    cout << "Enter Infix Expression: ";
+    getline(cin, infix);
+
+    string prefix = infixToPrefix(infix);
+    cout << "Prefix Expression: " << prefix << endl;
+
+    return 0;
+}
