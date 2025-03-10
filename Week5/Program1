@@ -1,0 +1,56 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <cctype>  
+
+using namespace std;
+
+int evaluatePostfix(const string& expr) {
+    stack<int> st;
+    int i = 0;
+
+    while (i < expr.length()) {
+        if (expr[i] == ' ') {
+            i++;
+            continue;
+        }
+
+        if (isdigit(expr[i])) {
+            int num = 0;
+            while (i < expr.length() && isdigit(expr[i])) {
+                num = num * 10 + (expr[i] - '0'); 
+                i++;
+            }
+            st.push(num);  
+        }
+        else {
+            int val2 = st.top(); 
+            st.pop();
+            int val1 = st.top(); 
+            st.pop();
+
+            switch(expr[i]) {
+                case '+': st.push(val1 + val2); break;
+                case '-': st.push(val1 - val2); break;
+                case '*': st.push(val1 * val2); break;
+                case '/': st.push(val1 / val2); break;
+                case '^': {
+                    int res = 1;
+                    for (int j = 0; j < val2; j++) res *= val1;
+                    st.push(res);
+                    break;
+                }
+            }
+            i++;
+        }
+    }
+    return st.top();
+}
+
+int main() {
+    string expr;
+    cout << "Enter a postfix expression: "; 
+    getline(cin, expr);  
+    cout << "Result: " << evaluatePostfix(expr) << endl;
+    return 0;
+}
