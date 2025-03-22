@@ -1,0 +1,118 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+class Queue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    Queue() {
+        front = rear = nullptr;
+    }
+
+    void enqueue(int value) {
+        Node* newNode = new Node(value);
+        if (rear == nullptr) {  
+            front = rear = newNode;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+        cout << value << " has been enqueued." << endl;  
+    }
+
+    void dequeue() {
+        if (front == nullptr) {
+            cout << "Queue is empty!" << endl;
+            return;
+        }
+        Node* temp = front;
+        front = front->next;
+        if (front == nullptr) {
+            rear = nullptr;
+        }
+        cout << temp->data << " has been dequeued." << endl;
+        delete temp;
+    }
+
+    int peek() {
+        if (front == nullptr) {
+            return -1;  
+        }
+        return front->data;
+    }
+
+    bool isEmpty() {
+        return front == nullptr;
+    }
+
+    void display() {
+        if (front == nullptr) {
+            cout << "Queue is empty!" << endl;
+            return;
+        }
+        cout << "Queue contents: ";
+        Node* temp = front;
+        while (temp != nullptr) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "NULL" << endl;
+    }
+};
+
+int main() {
+    Queue q;
+    int choice, value;
+
+    while (true) {
+        cout << "\nMenu:" << endl;
+        cout << "1.ENQUEUE" << endl;
+        cout << "2.DEQUEUE" << endl;
+        cout << "3.PEEK" << endl;
+        cout << "4.DISPLAY" << endl;
+        cout << "5.EXIT" << endl;
+        cout << "Enter your choice : ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter the value to enqueue: ";
+                cin >> value;
+                q.enqueue(value);
+                break;
+            case 2:
+                q.dequeue();
+                break;
+            case 3:
+                 value = q.peek();
+                if (value == -1) {
+                    cout << "Queue is empty! " << endl;
+                } else {
+                    cout << "Front element: " << value << endl;
+                }
+                break;
+            case 4:
+                q.display();
+                break;
+            case 5:
+                cout << "Exiting the program." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
