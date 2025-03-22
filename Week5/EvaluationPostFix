@@ -1,0 +1,94 @@
+#include <iostream>
+using namespace std;
+
+class Stack {
+private:
+    int* arr;
+    int capacity;
+    int top;
+
+public:
+    Stack(int size) {
+        capacity = size;
+        arr = new int[capacity];
+        top = -1;
+    }
+
+    ~Stack() {
+        delete[] arr;
+    }
+
+    void push(int value) {
+        if (top == capacity - 1) {
+            cout << "Stack overflow!" << endl;
+            return;
+        }
+        arr[++top] = value;
+    }
+
+    int pop() {
+        if (top == -1) {
+            cout << "Stack underflow!" << endl;
+            return -1;
+        }
+        return arr[top--];
+    }
+
+    int peek() {
+        if (top == -1) {
+            cout << "Stack is empty!" << endl;
+            return -1;
+        }
+        return arr[top];
+    }
+
+    bool isEmpty() {
+        return top == -1;
+    }
+};
+
+int evaluatePostfix() {
+    Stack s(100);
+    char c;
+    int operand1, operand2;
+    int num = 0;
+
+    cout << "Enter a postfix expression: ";
+
+    while ((c = cin.get()) != '\n') {
+        if (c == ' ') {
+            if (num != 0) {
+                s.push(num);
+                num = 0;
+            }
+        } else if (isdigit(c)) {
+            num = num * 10 + (c - '0');
+        } else {
+            operand2 = s.pop();
+            operand1 = s.pop();
+            switch (c) {
+                case '+': s.push(operand1 + operand2); break;
+                case '-': s.push(operand1 - operand2); break;
+                case '*': s.push(operand1 * operand2); break;
+                case '/': s.push(operand1 / operand2); break;
+                default:
+                    cout << "Invalid operator!" << endl;
+                    return -1;
+            }
+        }
+    }
+
+    if (num != 0) {
+        s.push(num);
+    }
+
+    return s.peek();
+}
+
+int main() {
+    int result = evaluatePostfix();
+    if (result != -1) {
+        cout << "The result is: " << result << endl;
+    }
+    return 0;
+}
