@@ -1,0 +1,803 @@
+week-7
+
+1)
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+class SinglyLinkedList {
+public:
+    Node* head;
+    SinglyLinkedList() {
+        head = nullptr;
+    }
+
+    void insert(int data) {
+        Node* newNode = new Node(data);
+        if (head == nullptr || head->data >= data) {
+            newNode->next = head;
+            head = newNode;
+        } else {
+            Node* current = head;
+            while (current->next != nullptr && current->next->data < data) {
+                current = current->next;
+            }
+            newNode->next = current->next;
+            current->next = newNode;
+        }
+    }
+
+    void deleteNode(int data) {
+        if (head == nullptr) {
+            cout << "List is empty." << endl;
+            return;
+        }
+        if (head->data == data) {
+            head = head->next;
+            return;
+        }
+        Node* current = head;
+        while (current->next != nullptr) {
+            if (current->next->data == data) {
+                current->next = current->next->next;
+                return;
+            }
+            current = current->next;
+        }
+        cout << "Node with value " << data << " not found." << endl;
+    }
+
+    void display() {
+        if (head == nullptr) {
+            cout << "List is empty." << endl;
+            return;
+        }
+        Node* current = head;
+        while (current != nullptr) {
+            cout << current->data << " -> ";
+            current = current->next;
+        }
+        cout << "None" << endl;
+    }
+};
+
+int main() {
+    SinglyLinkedList sll;
+    int choice, value;
+
+    while (true) {
+        cout << "\nMenu:" << endl;
+        cout << "1. Insert a node" << endl;
+        cout << "2. Delete a node" << endl;
+        cout << "3. Display the list" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice (1/2/3/4): ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter the value to insert: ";
+                cin >> value;
+                sll.insert(value);
+                cout << "Inserted " << value << "." << endl;
+                break;
+            case 2:
+                cout << "Enter the value to delete: ";
+                cin >> value;
+                sll.deleteNode(value);
+                break;
+            case 3:
+                cout << "Displaying the list: ";
+                sll.display();
+                break;
+            case 4:
+                cout << "Exiting the program." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
+
+output:
+Menu:
+1. Insert a node
+2. Delete a node
+3. Display the list
+4. Exit
+Enter your choice (1/2/3/4): 1
+Enter the value to insert: 34
+Inserted 34.
+
+Menu:
+1. Insert a node
+2. Delete a node
+3. Display the list
+4. Exit
+Enter your choice (1/2/3/4): 1
+Enter the value to insert: 67
+Inserted 67.
+
+Menu:
+1. Insert a node
+2. Delete a node
+3. Display the list
+4. Exit
+Enter your choice (1/2/3/4): 3
+Displaying the list: 34 -> 67 -> None
+
+Menu:
+1. Insert a node
+2. Delete a node
+3. Display the list
+4. Exit
+Enter your choice (1/2/3/4): 2
+Enter the value to delete: 34
+
+Menu:
+1. Insert a node
+2. Delete a node
+3. Display the list
+4. Exit
+Enter your choice (1/2/3/4): 3
+Displaying the list: 67 -> None
+
+Menu:
+1. Insert a node
+2. Delete a node
+3. Display the list
+4. Exit
+Enter your choice (1/2/3/4): 2
+Enter the value to delete: 25
+Node with value 25 not found.
+
+Menu:
+1. Insert a node
+2. Delete a node
+3. Display the list
+4. Exit
+Enter your choice (1/2/3/4): 2
+Enter the value to delete: 67
+
+Menu:
+1. Insert a node
+2. Delete a node
+3. Display the list
+4. Exit
+Enter your choice (1/2/3/4): 2
+Enter the value to delete: 34
+List is empty.
+
+Menu:
+1. Insert a node
+2. Delete a node
+3. Display the list
+4. Exit
+Enter your choice (1/2/3/4): 3
+Displaying the list: List is empty.
+
+Menu:
+1. Insert a node
+2. Delete a node
+3. Display the list
+4. Exit
+Enter your choice (1/2/3/4): 4
+Exiting the program.
+******************************************************************************************************
+2)
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+class SinglyLinkedList {
+public:
+    Node* head;
+    SinglyLinkedList() {
+        head = nullptr;
+    }
+
+    void insert(int data) {
+        Node* newNode = new Node(data);
+        if (head == nullptr) {
+            head = newNode;
+        } else {
+            Node* current = head;
+            while (current->next != nullptr) {
+                current = current->next;
+            }
+            current->next = newNode;
+        }
+    }
+
+    void display() {
+        if (head == nullptr) {
+            cout << "List is empty." << endl;
+            return;
+        }
+        Node* current = head;
+        while (current != nullptr) {
+            cout << current->data << " -> ";
+            current = current->next;
+        }
+        cout << "None" << endl;
+    }
+
+    Node* reverseRecursively(Node* current) {
+        if (current == nullptr || current->next == nullptr) {
+            return current;
+        }
+        Node* rest = reverseRecursively(current->next);
+        current->next->next = current;
+        current->next = nullptr;
+        return rest;
+    }
+
+    void reverse() {
+        head = reverseRecursively(head);
+    }
+};
+
+int main() {
+    SinglyLinkedList sll;
+    int choice, value;
+
+    while (true) {
+        cout << "\nMenu:" << endl;
+        cout << "1. Insert a node" << endl;
+        cout << "2. Display the list" << endl;
+        cout << "3. Reverse the list" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice (1/2/3/4): ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter the value to insert: ";
+                cin >> value;
+                sll.insert(value);
+                break;
+            case 2:
+                cout << "Displaying the list: ";
+                sll.display();
+                break;
+            case 3:
+                sll.reverse();
+                cout << "List has been reversed." << endl;
+                break;
+            case 4:
+                cout << "Exiting the program." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
+
+output:
+Menu:
+1. Insert a node
+2. Display the list
+3. Reverse the list
+4. Exit
+Enter your choice (1/2/3/4): 1
+Enter the value to insert: 27
+
+Menu:
+1. Insert a node
+2. Display the list
+3. Reverse the list
+4. Exit
+Enter your choice (1/2/3/4): 1
+Enter the value to insert: 57
+
+Menu:
+1. Insert a node
+2. Display the list
+3. Reverse the list
+4. Exit
+Enter your choice (1/2/3/4): 1
+Enter the value to insert: 100
+
+Menu:
+1. Insert a node
+2. Display the list
+3. Reverse the list
+4. Exit
+Enter your choice (1/2/3/4): 2
+Displaying the list: 27 -> 57 -> 100 -> None
+
+Menu:
+1. Insert a node
+2. Display the list
+3. Reverse the list
+4. Exit
+Enter your choice (1/2/3/4): 3
+List has been reversed.
+Menu:
+1. Insert a node
+2. Display the list
+3. Reverse the list
+4. Exit
+Enter your choice (1/2/3/4): 2
+Displaying the list: 100 -> 57 -> 27 -> None
+
+Menu:
+1. Insert a node
+2. Display the list
+3. Reverse the list
+4. Exit
+Enter your choice (1/2/3/4): 4
+Exiting the program.
+*****************************************************************************
+3)
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+class Stack {
+private:
+    Node* top;
+
+public:
+    Stack() {
+        top = nullptr;
+    }
+
+    void push(int value) {
+        Node* newNode = new Node(value);
+        newNode->next = top;  // New node points to the current top
+        top = newNode;  // Update top to the new node
+    }
+
+    void pop() {
+        if (top == nullptr) {
+            cout << "Stack is empty!" << endl;
+            return;
+        }
+        Node* temp = top;
+        top = top->next;  // Update top to the next node
+        delete temp;  // Delete the old top node
+    }
+
+    int peek() {
+        if (top == nullptr) {
+            cout << "Stack is empty!" << endl;
+            return -1;
+        }
+        return top->data;
+    }
+
+    bool isEmpty() {
+        return top == nullptr;
+    }
+
+    void display() {
+        if (top == nullptr) {
+            cout << "Stack is empty!" << endl;
+            return;
+        }
+        Node* temp = top;
+        while (temp != nullptr) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "None" << endl;
+    }
+};
+
+int main() {
+    Stack stack;
+    int choice, value;
+
+    while (true) {
+        cout << "\nMenu:" << endl;
+        cout << "1. Push an element" << endl;
+        cout << "2. Pop an element" << endl;
+        cout << "3. Peek the top element" << endl;
+        cout << "4. Display the stack" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Enter your choice (1/2/3/4/5): ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter the value to push: ";
+                cin >> value;
+                stack.push(value);
+                cout << value << " pushed to the stack." << endl;
+                break;
+            case 2:
+                stack.pop();
+                break;
+            case 3:
+                cout << "Top element: " << stack.peek() << endl;
+                break;
+            case 4:
+                cout << "Stack contents: ";
+                stack.display();
+                break;
+            case 5:
+                cout << "Exiting the program." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
+output:
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 1
+Enter the value to push: 23
+23 pushed to the stack.
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 1
+Enter the value to push: 45
+45 pushed to the stack.
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 1
+Enter the value to push: 43
+43 pushed to the stack.
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 3
+Top element: 43
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 4
+Stack contents: 43 -> 45 -> 23 -> None
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 2
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 2
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 3
+Top element: 23
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 4
+Stack contents: 23 -> None
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 2
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 2
+Stack is empty!
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 3
+Top element: Stack is empty!
+-1
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 4
+Stack contents: Stack is empty!
+
+Menu:
+1. Push an element
+2. Pop an element
+3. Peek the top element
+4. Display the stack
+5. Exit
+Enter your choice (1/2/3/4/5): 5
+Exiting the program.
+**************************************************************************************
+4)
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+class Queue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    Queue() {
+        front = rear = nullptr;
+    }
+
+    void enqueue(int value) {
+        Node* newNode = new Node(value);
+        if (rear == nullptr) {
+            front = rear = newNode;
+            return;
+        }
+        rear->next = newNode;
+        rear = newNode;
+    }
+
+    void dequeue() {
+        if (front == nullptr) {
+            cout << "Queue is empty!" << endl;
+            return;
+        }
+        Node* temp = front;
+        front = front->next;
+        if (front == nullptr) {
+            rear = nullptr;
+        }
+        delete temp;
+    }
+
+    int peek() {
+        if (front == nullptr) {
+            cout << "Queue is empty!" << endl;
+            return -1;
+        }
+        return front->data;
+    }
+
+    bool isEmpty() {
+        return front == nullptr;
+    }
+
+    void display() {
+        if (front == nullptr) {
+            cout << "Queue is empty!" << endl;
+            return;
+        }
+        Node* temp = front;
+        while (temp != nullptr) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "None" << endl;
+    }
+};
+
+int main() {
+    Queue q;
+    int choice, value;
+
+    while (true) {
+        cout << "\nMenu:" << endl;
+        cout << "1. Enqueue an element" << endl;
+        cout << "2. Dequeue an element" << endl;
+        cout << "3. Peek the front element" << endl;
+        cout << "4. Display the queue" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Enter your choice (1/2/3/4/5): ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter the value to enqueue: ";
+                cin >> value;
+                q.enqueue(value);
+                break;
+            case 2:
+                q.dequeue();
+                break;
+            case 3:
+                cout << "Front element: " << q.peek() << endl;
+                break;
+            case 4:
+                cout << "Queue contents: ";
+                q.display();
+                break;
+            case 5:
+                cout << "Exiting the program." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
+
+output
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 1
+Enter the value to enqueue: 34
+
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 1
+Enter the value to enqueue: 56
+
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 1
+Enter the value to enqueue: 67
+
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 4
+Queue contents: 34 -> 56 -> 67 -> None
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 3
+Front element: 34
+
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 2
+
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 2
+
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 2
+
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 2
+Queue is empty!
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 3
+Front element: Queue is empty!
+-1
+
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 4
+Queue contents: Queue is empty!
+
+Menu:
+1. Enqueue an element
+2. Dequeue an element
+3. Peek the front element
+4. Display the queue
+5. Exit
+Enter your choice (1/2/3/4/5): 5
+Exiting the program.
