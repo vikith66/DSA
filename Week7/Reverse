@@ -1,0 +1,102 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+class SinglyLinkedList {
+public:
+    Node* head;
+    SinglyLinkedList() {
+        head = nullptr;
+    }
+
+    void insert(int data) {
+        Node* newNode = new Node(data);
+        if (head == nullptr) {
+            head = newNode;
+        } else {
+            Node* current = head;
+            while (current->next != nullptr) {
+                current = current->next;
+            }
+            current->next = newNode;
+        }
+    }
+
+    void display() {
+        if (head == nullptr) {
+            cout << "List is empty." << endl;
+            return;
+        }
+        cout << "Displaying the list: ";
+        Node* current = head;
+        while (current != nullptr) {
+            cout << current->data << " -> ";
+            current = current->next;
+        }
+        cout << "NULL" << endl;
+    }
+
+    Node* reverseRecursively(Node* current) {
+        if (current == nullptr || current->next == nullptr) {
+            return current;
+        }
+        Node* rest = reverseRecursively(current->next);
+        current->next->next = current;
+        current->next = nullptr;
+        return rest;
+    }
+
+    void reverse() {
+        if (head == nullptr) {
+            cout << "List is empty." << endl;
+            return;
+        }
+        head = reverseRecursively(head);
+        cout << "List has been reversed." << endl;
+    }
+};
+
+int main() {
+    SinglyLinkedList sll;
+    int choice, value;
+
+    while (true) {
+        cout << "\nMenu:" << endl;
+        cout << "1. Insert a node" << endl;
+        cout << "2. Display the list" << endl;
+        cout << "3. Reverse the list" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice : ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter the value to insert: ";
+                cin >> value;
+                sll.insert(value);
+                break;
+            case 2:
+                sll.display();
+                break;
+            case 3:
+                sll.reverse();
+                break;
+            case 4:
+                cout << "Exiting the program." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
