@@ -1,0 +1,62 @@
+#include <iostream>
+using namespace std;
+
+void merge(int arr[], int si, int mid, int ei) {
+    int n1 = mid - si + 1;
+    int n2 = ei - mid;
+
+    int s1[n1], s2[n2];
+    for (int i = 0; i < n1; i++) s1[i] = arr[si + i];
+    for (int j = 0; j < n2; j++) s2[j] = arr[mid + 1 + j];
+
+    int I = 0, J = 0, k = si;
+
+    while (I < n1 && J < n2) {
+        if (s1[I] <= s2[J]) {
+            arr[k] = s1[I];
+            I++;
+        } else {
+            arr[k] = s2[J];
+            J++;
+        }
+        k++;
+    }
+
+    while (I < n1) {
+        arr[k] = s1[I];
+        I++;
+        k++;
+    }
+
+    while (J < n2) {
+        arr[k] = s2[J];
+        J++;
+        k++;
+    }
+}
+
+void mergeSort(int arr[], int si, int ei) {
+    if (si >= ei) return;
+
+    int mid = si + (ei - si) / 2;
+    mergeSort(arr, si, mid);
+    mergeSort(arr, mid + 1, ei);
+    merge(arr, si, mid, ei);
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of elements: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter " << n << " elements: ";
+    for (int i = 0; i < n; i++) cin >> arr[i];
+
+    mergeSort(arr, 0, n - 1);
+
+    cout << "Sorted Array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+    
+    return 0;
+}
