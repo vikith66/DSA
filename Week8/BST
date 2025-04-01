@@ -1,0 +1,83 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    char data;
+    Node* left;
+    Node* right;
+
+    Node(char val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+class BST {
+private:
+    Node* root;
+
+    Node* insert(Node* node, char val) {
+        if (!node) return new Node(val);
+
+        if (val < node->data)
+            node->left = insert(node->left, val);
+        else
+            node->right = insert(node->right, val);
+
+        return node;
+    }
+
+    void inorder(Node* node) {
+        if (!node) return;
+        inorder(node->left);
+        cout << node->data << " ";
+        inorder(node->right);
+    }
+
+    void preorder(Node* node) {
+        if (!node) return;
+        cout << node->data << " ";
+        preorder(node->left);
+        preorder(node->right);
+    }
+
+    void postorder(Node* node) {
+        if (!node) return;
+        postorder(node->left);
+        postorder(node->right);
+        cout << node->data << " ";
+    }
+
+public:
+    BST() : root(nullptr) {}
+
+    void insert(char val) {
+        root = insert(root, val);
+    }
+    void displayTraversals() {
+        cout << "\nInorder Traversal: ";
+        inorder(root);
+        cout << "\nPreorder Traversal: ";
+        preorder(root);
+        cout << "\nPostorder Traversal: ";
+        postorder(root);
+        cout << endl;
+    }
+};
+
+int main() {
+    BST tree;
+    int n;
+    char value;
+
+    cout << "Enter the number of elements to insert in the BST: ";
+    cin >> n;
+
+    cout << "Enter " << n << " characters: ";
+    for (int i = 0; i < n; i++) {
+        cin >> value;
+        tree.insert(value);
+    }
+
+    tree.displayTraversals();
+
+    return 0;
+}
