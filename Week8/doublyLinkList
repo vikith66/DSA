@@ -1,0 +1,155 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int val) : data(val), prev(nullptr), next(nullptr) {}
+};
+
+class SortedDoublyLinkedList {
+private:
+    Node* head;
+    Node* tail;
+
+public:
+    SortedDoublyLinkedList() : head(nullptr), tail(nullptr) {}
+
+    void insert(int val) {
+        Node* newNode = new Node(val);
+        if (!head) {
+            head = tail = newNode;
+            return;
+        }
+
+        Node* current = head;
+        while (current && current->data < val) {
+            current = current->next;
+        }
+
+        if (!current) {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        } else if (current == head) {
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        } else {
+            newNode->next = current;
+            newNode->prev = current->prev;
+            current->prev->next = newNode;
+            current->prev = newNode;
+        }
+    }
+
+    void remove(int val) {
+        if (!head) {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        Node* current = head;
+        while (current && current->data != val) {
+            current = current->next;
+        }
+
+        if (!current) {
+            cout << "Value not found in the list!" << endl;
+            return;
+        }
+
+        if (current == head) {
+            head = head->next;
+            if (head) head->prev = nullptr;
+            else tail = nullptr;
+        } else if (current == tail) {
+            tail = tail->prev;
+            if (tail) tail->next = nullptr;
+            else head = nullptr;
+        } else {
+            current->prev->next = current->next;
+            current->next->prev = current->prev;
+        }
+
+        delete current;
+    }
+
+    void displayForward() {
+        if (!head) {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        Node* temp = head;
+        cout << "List (Forward): ";
+        while (temp) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+    void displayBackward() {
+        if (!tail) {
+            cout << "List is empty!" << endl;
+            return;
+        }
+
+        Node* temp = tail;
+        cout << "List (Backward): ";
+        while (temp) {
+            cout << temp->data << " ";
+            temp = temp->prev;
+        }
+        cout << endl;
+    }
+
+    ~SortedDoublyLinkedList() {
+        Node* current = head;
+        while (current) {
+            Node* nextNode = current->next;
+            delete current;
+            current = nextNode;
+        }
+    }
+};
+
+int main() {
+    SortedDoublyLinkedList list;
+    int choice, value;
+
+    while (true) {
+        cout << "\n1. Insert\n2. Delete\n3. Display Forward\n4. Display Backward\n5. Exit\nEnter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter value to insert: ";
+                cin >> value;
+                list.insert(value);
+                break;
+            case 2:
+                cout << "Enter value to delete: ";
+                cin >> value;
+                list.remove(value);
+                break;
+            case 3:
+                list.displayForward();
+                break;
+            case 4:
+                list.displayBackward();
+                break;
+            case 5:
+                cout << "Exiting..." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice! Try again." << endl;
+        }
+    }
+
+    return 0;
+}
