@@ -1,0 +1,88 @@
+#include <iostream>
+using namespace std;
+
+struct ListNode {
+    int vertex;
+    ListNode* next;
+    ListNode(int v) : vertex(v), next(nullptr) {}
+};
+
+class UndirectedGraph {
+private:
+    ListNode** adjList;
+    int numVertices;
+
+public:
+    UndirectedGraph(int vertices) : numVertices(vertices) {
+        adjList = new ListNode*[numVertices];
+        for (int i = 0; i < numVertices; ++i) {
+            adjList[i] = nullptr;
+        }
+    }
+
+    ~UndirectedGraph() {
+        for (int i = 0; i < numVertices; ++i) {
+            ListNode* current = adjList[i];
+            while (current != nullptr) {
+                ListNode* temp = current;
+                current = current->next;
+                delete temp;
+            }
+        }
+        delete[] adjList;
+    }
+
+    void addEdge(int v1, int v2) {
+        if (v1 >= 0 && v1 < numVertices && v2 >= 0 && v2 < numVertices) {
+            ListNode* newNode = new ListNode(v2);
+            newNode->next = adjList[v1];
+            adjList[v1] = newNode;
+            
+            newNode = new ListNode(v1);
+            newNode->next = adjList[v2];
+            adjList[v2] = newNode;
+        } else {
+            cout << "Invalid vertex index!" << endl;
+        }
+    }
+
+    void printList() {
+        cout << "\nAdjacency List:\n";
+        for (int i = 0; i < numVertices; ++i) {
+            cout << i << ": ";
+            ListNode* current = adjList[i];
+            while (current != nullptr) {
+                cout << current->vertex << " ";
+                current = current->next;
+            }
+            cout << "\n";
+        }
+    }
+};
+
+int main() {
+    int vertices, edges;
+    
+    cout << "----Undirected Graph----\n";
+    cout << "Enter the number of vertices in the graph: ";
+    cin >> vertices;
+    
+    UndirectedGraph graph(vertices);
+    
+    cout << "Enter the number of edges in the graph: ";
+    cin >> edges;
+    
+    cout << "\nEnter the edges (two vertices connected by the edge, separated by space):\n";
+    cout << "Vertex indices should be between 0 and " << vertices-1 << "\n";
+    
+    for (int i = 0; i < edges; ++i) {
+        int v1, v2;
+        cout << "Edge " << i+1 << ": ";
+        cin >> v1 >> v2;
+        graph.addEdge(v1, v2);
+    }
+    
+    graph.printList();
+    
+    return 0;
+}
