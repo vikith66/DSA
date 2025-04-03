@@ -1,0 +1,77 @@
+#include <iostream>
+using namespace std;
+
+class DirectedGraph {
+private:
+	int** adjMatrix;
+	int numVertices;
+
+public:
+	DirectedGraph(int vertices) : numVertices(vertices) {
+		adjMatrix = new int*[numVertices];
+		for (int i = 0; i < numVertices; ++i) {
+			adjMatrix[i] = new int[numVertices];
+			for (int j = 0; j < numVertices; ++j) {
+				adjMatrix[i][j] = 0;
+			}
+		}
+	}
+
+	~DirectedGraph() {
+		for (int i = 0; i < numVertices; ++i) {
+			delete[] adjMatrix[i];
+		}
+		delete[] adjMatrix;
+	}
+
+	void addEdge(int src, int dest) {
+		if (src >= 0 && src < numVertices && dest >= 0 && dest < numVertices) {
+			adjMatrix[src][dest] = 1;
+		} else {
+			cout << "Invalid vertex index!" << endl;
+		}
+	}
+
+	void printMatrix() {
+		cout << "\nAdjacency Matrix:\n";
+		cout << "   ";
+		for (int i = 0; i < numVertices; ++i) {
+			cout << i << " ";
+		}
+		cout << "\n";
+
+		for (int i = 0; i < numVertices; ++i) {
+			cout << i << ": ";
+			for (int j = 0; j < numVertices; ++j) {
+				cout << adjMatrix[i][j] << " ";
+			}
+			cout << "\n";
+		}
+	}
+};
+
+int main() {
+	int vertices, edges;
+    cout << "----Directed Graph----"<<endl;
+	cout << "Enter the number of vertices in the graph: ";
+	cin >> vertices;
+
+	DirectedGraph graph(vertices);
+
+	cout << "Enter the number of edges in the graph: ";
+	cin >> edges;
+
+	cout << "\nEnter the edges (source and destination vertices, separated by space):\n";
+	cout << "Vertex indices should be between 0 and " << vertices-1 << "\n";
+
+	for (int i = 0; i < edges; ++i) {
+		int src, dest;
+		cout << "Edge " << i+1 << ": ";
+		cin >> src >> dest;
+		graph.addEdge(src, dest);
+	}
+
+	graph.printMatrix();
+
+	return 0;
+}
