@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+
+class UndirectedGraph {
+private:
+    int** adjMatrix;
+    int numVertices;
+
+public:
+    UndirectedGraph(int vertices) : numVertices(vertices) {
+        adjMatrix = new int*[numVertices];
+        for (int i = 0; i < numVertices; ++i) {
+            adjMatrix[i] = new int[numVertices];
+            for (int j = 0; j < numVertices; ++j) {
+                adjMatrix[i][j] = 0;
+            }
+        }
+    }
+
+    ~UndirectedGraph() {
+        for (int i = 0; i < numVertices; ++i) {
+            delete[] adjMatrix[i];
+        }
+        delete[] adjMatrix;
+    }
+
+    void addEdge(int src, int dest) {
+        if (src >= 0 && src < numVertices && dest >= 0 && dest < numVertices) {
+            adjMatrix[src][dest] = 1;
+            adjMatrix[dest][src] = 1;
+        } else {
+            cout << "Invalid vertex index!" << endl;
+        }
+    }
+
+    void printMatrix() {
+        cout << "\nAdjacency Matrix:"<<endl;
+        cout << "   ";
+        for (int i = 0; i < numVertices; ++i) {
+            cout << i << " ";
+        }
+        cout << "\n";
+        
+        for (int i = 0; i < numVertices; ++i) {
+            cout << i << ": ";
+            for (int j = 0; j < numVertices; ++j) {
+                cout << adjMatrix[i][j] << " ";
+            }
+            cout << "\n";
+        }
+    }
+};
+
+int main() {
+    int vertices, edges;
+    
+    cout << "----Undirected Graph----"<<endl;
+    cout << "Enter the number of vertices in the graph: ";
+    cin >> vertices;
+    
+    UndirectedGraph graph(vertices);
+    
+    cout << "Enter the number of edges in the graph: ";
+    cin >> edges;
+    
+    cout << "\nEnter the edges (two vertices connected by the edge, separated by space):\n";
+    cout << "Vertex indices should be between 0 and " << vertices-1 << "\n";
+    
+    for (int i = 0; i < edges; ++i) {
+        int v1, v2;
+        cout << "Edge " << i+1 << ": ";
+        cin >> v1 >> v2;
+        graph.addEdge(v1, v2);
+    }
+    
+    graph.printMatrix();
+    
+    return 0;
+}
