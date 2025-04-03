@@ -1,0 +1,84 @@
+#include <iostream>
+using namespace std;
+
+struct ListNode {
+    int vertex;
+    ListNode* next;
+    ListNode(int v) : vertex(v), next(nullptr) {}
+};
+
+class DirectedGraph {
+private:
+    ListNode** adjList;
+    int numVertices;
+
+public:
+    DirectedGraph(int vertices) : numVertices(vertices) {
+        adjList = new ListNode*[numVertices];
+        for (int i = 0; i < numVertices; ++i) {
+            adjList[i] = nullptr;
+        }
+    }
+
+    ~DirectedGraph() {
+        for (int i = 0; i < numVertices; ++i) {
+            ListNode* current = adjList[i];
+            while (current != nullptr) {
+                ListNode* temp = current;
+                current = current->next;
+                delete temp;
+            }
+        }
+        delete[] adjList;
+    }
+
+    void addEdge(int src, int dest) {
+        if (src >= 0 && src < numVertices && dest >= 0 && dest < numVertices) {
+            ListNode* newNode = new ListNode(dest);
+            newNode->next = adjList[src];
+            adjList[src] = newNode;
+        } else {
+            cout << "Invalid vertex index!" << endl;
+        }
+    }
+
+    void printList() {
+        cout << "\nAdjacency List:"<<endl;
+        for (int i = 0; i < numVertices; ++i) {
+            cout << i << " -> ";
+            ListNode* current = adjList[i];
+            while (current != nullptr) {
+                cout << current->vertex << " ";
+                current = current->next;
+            }
+            cout << "\n";
+        }
+    }
+};
+
+int main() {
+    int vertices, edges;
+    
+    cout << "----Directed Graph----\n";
+    cout << "Enter the number of vertices in the graph: ";
+    cin >> vertices;
+    
+    DirectedGraph graph(vertices);
+    
+    cout << "Enter the number of edges in the graph: ";
+    cin >> edges;
+    
+    cout << "\nEnter the edges (source and destination vertices, separated by space):\n";
+    cout << "Vertex indices should be between 0 and " << vertices-1 << "\n";
+    
+    for (int i = 0; i < edges; ++i) {
+        int src, dest;
+        cout << "Edge " << i+1 << ": ";
+        cin >> src >> dest;
+        graph.addEdge(src, dest);
+    }
+    
+    graph.printList();
+    
+    return 0;
+}
