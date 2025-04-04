@@ -1,0 +1,64 @@
+#include<iostream>
+using namespace std;
+struct Node{
+    int data;
+    Node* next;
+    Node(int val): data(val) , next(NULL){}
+};
+void insert(Node*& head, int val){
+    Node* newnode = new Node(val);
+    if(!head){
+        head = newnode;
+        return;
+    }
+    Node* temp = head;
+    while(temp->next){
+        temp = temp->next;
+    }
+    temp->next = newnode;
+}
+
+void display(Node* head){
+    while(head){
+        cout<<head->data;
+        if(head->next) cout<<" -> ";
+        head = head->next;
+    }
+    cout<<" -> NULL";
+}
+void deleteval(Node*& head){
+    if(!head || !head->next) return;
+    Node* prev = NULL;
+    Node* cur = head;
+    Node* newnode = head->next;
+    while(newnode){
+        if(newnode->data < 0){
+            if(!prev){
+                head=head->next;
+            } else {
+                prev->next=cur->next;
+            }
+            delete cur;
+            break;
+        }
+        prev = cur;
+        cur = newnode;
+        newnode = newnode->next;
+    }
+}
+int main(){
+    Node* head = NULL;
+    int n, val;
+    cout<<"Enter The Number Of Elements : "<<endl;
+    cin>>n;
+    cout<<"Enter The Elements : ";
+    for(int i = 0; i < n; i++){
+        cin>>val;
+        insert(head,val);
+    }
+    cout<<"\nElements In The List : ";
+    display(head);
+    cout<<"\nElements After Deletion : ";
+    deleteval(head);
+    display(head);
+}
